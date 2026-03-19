@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bu3sw7m8mht3k"]
+
+[ext_resource type="Script" uid="uid://eon0s6ns6pxw" path="res://Scripts/Repository/Impl/SceneRepository.cs" id="1_y5ugw"]
+
+[node name="SceneRepository" type="Node" unique_id=1200789495]
+script = ExtResource("1_y5ugw")
+_packedScenes = Dictionary[int, PackedScene]({})
