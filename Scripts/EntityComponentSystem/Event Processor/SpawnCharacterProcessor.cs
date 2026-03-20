@@ -26,8 +26,4 @@ public class SpawnCharacterProcessor : IEventProcessor<SpawnPlayerCharacterEvent
         _gameLoop.GameObjectManager.AddGameObject(testEntity.EntityId, sprite);
         _gameLoop.SystemManager.GetSystem<MovementSystem>().AddEntity(testEntity);
     }
-
-    public void ProcessEvent(IEvent ev) {
-        ProcessEvent((SpawnPlayerCharacterEvent)ev);
-    }
 }

@@ -31,8 +31,4 @@ public class DamageProcessor : IEventProcessor<DamageEvent> {
             }
         }
     }
-
-    public void ProcessEvent(IEvent ev) {
-        ProcessEvent((DamageEvent)ev);
-    }
 }
