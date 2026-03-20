@@ -5,5 +5,6 @@ public partial class GameLoopTest : Node {
 
     public override void _Ready() {
         _gameLoop = GameLoop.GetInstance();
+        _gameLoop.EventManager.AddEvent(new SpawnPlayerCharacterEvent());
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using EntityComponentSystem;
 
-public class DamageEvent {
+public class DamageEvent : IEvent {
     public ulong SourceEntityId { get; }
     public ulong TargetEntityId { get; }
     public double MultiHit { get; }

@@ -1,19 +1,26 @@
+using System;
 using System.Collections.Generic;
+using Godot;
 
 namespace EntityComponentSystem;
 
 public class SystemManager {
-    private readonly Dictionary<ulong, ISystem> _systems = [];
+    private readonly Dictionary<Type, ISystem> _systems = [];
 
-    public void AddSystem(ulong id, ISystem system) {
-        _systems[system.SystemId] = system;
+    public void AddSystem<T>(ISystem system) where T : ISystem {
+        if (_systems.ContainsKey(typeof(T))) {
+            GD.PushError($"System with ID {typeof(T)} already exists");
+            return;
+        }
+
+        _systems[typeof(T)] = system;
     }
 
-    public void RemoveSystem(ulong id) {
-        _systems.Remove(id);
+    public void RemoveSystem<T>() where T : ISystem {
+        _systems.Remove(typeof(T));
     }
 
-    public ISystem GetSystem(ulong id) {
-        return _systems[id];
+    public T GetSystem<T>() where T : ISystem {
+        return (T)_systems[typeof(T)];
     }
 }

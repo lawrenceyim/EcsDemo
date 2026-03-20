@@ -1,13 +1,13 @@
 using EntityComponentSystem;
 
-public class DamageEventProcessor : IEventProcessor {
+public class DamageProcessor : IEventProcessor<DamageEvent> {
     private EntityManager _entityManager;
 
-    public DamageEventProcessor(EntityManager entityManager) {
+    public DamageProcessor(EntityManager entityManager) {
         _entityManager = entityManager;
     }
 
-    public void ProcessDamageEvent(DamageEvent damageEvent) {
+    public void ProcessEvent(DamageEvent damageEvent) {
         Entity target = _entityManager.GetEntity(damageEvent.TargetEntityId);
 
         if (target is null) {
@@ -16,7 +16,7 @@ public class DamageEventProcessor : IEventProcessor {
 
         // TODO: calculate number of hits based on multihit
         int numberOfHits = 1; // Hard-coded for now
-        
+
         // TODO: calculate chance of each status chance based on damage instance types
 
         for (int i = 0; i < numberOfHits; i++) {
@@ -30,5 +30,9 @@ public class DamageEventProcessor : IEventProcessor {
                 // Calculate damage based on critical
             }
         }
+    }
+
+    public void ProcessEvent(IEvent ev) {
+        ProcessEvent((DamageEvent)ev);
     }
 }

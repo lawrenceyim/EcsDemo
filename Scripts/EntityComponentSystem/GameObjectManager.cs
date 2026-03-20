@@ -15,18 +15,18 @@ public partial class GameObjectManager : Node, IAutoload {
 		return _instance;
 	}
 
-	public void AddEntity(ulong entityId, Node node) {
+	public void AddGameObject(ulong entityId, Node node) {
 		AddChild(node);
 		GameObjects[entityId] = node;
 	}
 
-	public void RemoveEntity(ulong entityId) {
+	public void RemoveGameObject(ulong entityId) {
 		Node node = GameObjects[entityId];
 		node.QueueFree();
 		GameObjects.Remove(entityId);
 	}
 
-	public Node GetNodeByEntityId(ulong entityId) {
+	public Node GetGameObjectByEntityId(ulong entityId) {
 		return GameObjects[entityId];
 	}
 }

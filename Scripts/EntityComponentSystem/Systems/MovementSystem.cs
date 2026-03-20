@@ -4,6 +4,7 @@ using Godot;
 
 public class MovementSystem : ISystem {
     public ulong SystemId { get; } = 2;
+
     private Dictionary<ulong, Entity> _entities = [];
 
     public void Update(double delta) {
