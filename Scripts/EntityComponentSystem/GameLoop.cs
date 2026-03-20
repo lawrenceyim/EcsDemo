@@ -17,19 +17,11 @@ public class GameLoop : IAutoload, ITick {
 
     private GameLoop() {
         EntityManager = new EntityManager();
-        SystemManager = new SystemManager();
+        SystemManager = new SystemManager(this);
         EventManager = new EventManager(this);
         GameObjectManager = GameObjectManager.GetInstance();
         _gameClock = GameClock.GetInstance();
-        _gameClock.SetPauseState(true);
         _gameClock.AddActiveScene(this, 0);
-
-        // TODO: Remove test code
-        MovementSystem movementSystem = new();
-        SystemManager.AddSystem<MovementSystem>(movementSystem);
-
-
-        _gameClock.SetPauseState(false);
     }
 
     public static GameLoop GetInstance() {

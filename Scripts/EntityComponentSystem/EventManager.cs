@@ -27,11 +27,12 @@ public class EventManager {
         List<IEvent> events = _events;
         _events = [];
 
-        foreach (IEvent e in events) {
-            Type type = e.GetType();
-
+        foreach (IEvent ev in events) {
+            Type type = ev.GetType();
+            GD.Print($"Processing event {type.Name}");
             if (_eventProcessors.TryGetValue(type, out IEventProcessor processor)) {
-                processor.ProcessEvent(e);
+                GD.Print($"processor is {processor.GetType().Name}");
+                processor.ProcessEvent(ev);
             }
         }
     }

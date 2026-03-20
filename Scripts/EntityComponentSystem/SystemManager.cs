@@ -6,6 +6,13 @@ namespace EntityComponentSystem;
 
 public class SystemManager {
     private readonly Dictionary<Type, ISystem> _systems = [];
+    private GameLoop _gameLoop;
+
+    public SystemManager(GameLoop gameLoop) {
+        _gameLoop = gameLoop;
+
+        AddSystem<MovementSystem>(new MovementSystem(gameLoop));
+    }
 
     public void AddSystem<T>(ISystem system) where T : ISystem {
         if (_systems.ContainsKey(typeof(T))) {

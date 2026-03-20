@@ -3,9 +3,12 @@ using EntityComponentSystem;
 using Godot;
 
 public class MovementSystem : ISystem {
-    public ulong SystemId { get; } = 2;
-
     private Dictionary<ulong, Entity> _entities = [];
+    private GameLoop _gameLoop;
+
+    public MovementSystem(GameLoop gameLoop) {
+        _gameLoop = gameLoop;
+    }
 
     public void Update(double delta) {
         foreach (Entity entity in _entities.Values) {
