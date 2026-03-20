@@ -27,8 +27,4 @@ public class Entity {
 
         return default;
     }
-
-    public void UpdateComponent(Type componentType, IComponent component) {
-        _components[componentType] = component;
-    }
 }

@@ -14,7 +14,6 @@ public class MovementSystem : ISystem {
         foreach (Entity entity in _entities.Values) {
             PositionComponent positionComponent = entity.GetComponent<PositionComponent>();
             positionComponent.Position += entity.GetComponent<MovementComponent>().Velocity;
-            entity.UpdateComponent(typeof(PositionComponent), positionComponent);
         }
     }
 
