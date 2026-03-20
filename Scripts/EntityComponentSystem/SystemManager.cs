@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace EntityComponentSystem;
 
 public class SystemManager {
-    private Dictionary<ulong, ISystem> _systems = [];
+    private readonly Dictionary<ulong, ISystem> _systems = [];
 
     public void AddSystem(ulong id, ISystem system) {
         _systems[system.SystemId] = system;

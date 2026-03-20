@@ -36,7 +36,6 @@ public partial class ServiceLocator : Node, IAutoload {
     private static ServiceName _ConvertToEnum(Type objectType) {
         GD.Print($"Received IService of {objectType} for conversion to enum");
         return objectType switch {
-            not null when objectType == typeof(GameClock) => ServiceName.GameClock,
             not null when objectType == typeof(InputStateMachine) => ServiceName.InputStateMachine,
             not null when objectType == typeof(PlayerDataRepository) => ServiceName.PlayerData,
             not null when objectType == typeof(RepositoryLocator) => ServiceName.RepositoryLocator,
@@ -51,7 +50,6 @@ public partial class ServiceLocator : Node, IAutoload {
 
         PlayerDataRepository playerDataRepository = repositoryLocator.GetRepository<PlayerDataRepository>(RepositoryName.PlayerData);
         SceneRepository sceneRepository = repositoryLocator.GetRepository<SceneRepository>(RepositoryName.Scene);
-        AddService(ServiceName.GameClock, new GameClock(), true);
         AddService(ServiceName.InputStateMachine, new InputStateMachine(), true);
         AddService(ServiceName.PlayerDataService, new PlayerDataService(playerDataRepository), false);
         AddService(ServiceName.SceneManager, new SceneManager(sceneRepository), false);

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b21q381ipka7f"]
+
+[ext_resource type="Script" uid="uid://cq5pv7yiw4mrd" path="res://Scripts/Service Locator/ServiceImpl/GameClock.cs" id="1_e8op2"]
+
+[node name="GameClock" type="Node" unique_id=1590342237]
+script = ExtResource("1_e8op2")

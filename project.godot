@@ -11,8 +11,18 @@ config_version=5
 [application]
 
 config/name="EcsDemo"
-config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
+config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
+config/icon="res://Assets/Sprites/Placeholder/icon.svg"
+
+[autoload]
+
+GameObjectManager="*uid://cxvnj0yywxmd"
+GameClock="*uid://b21q381ipka7f"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
 
 [dotnet]
 

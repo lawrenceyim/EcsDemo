@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cxvnj0yywxmd"]
+
+[ext_resource type="Script" uid="uid://c8c7s8e488a4p" path="res://Scripts/EntityComponentSystem/GameObjectManager.cs" id="1_ddbrn"]
+
+[node name="GameObjectManager" type="Node" unique_id=1779527794]
+script = ExtResource("1_ddbrn")

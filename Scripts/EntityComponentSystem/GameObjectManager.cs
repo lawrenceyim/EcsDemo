@@ -1,0 +1,32 @@
+using System.Collections.Generic;
+using Godot;
+
+public partial class GameObjectManager : Node, IAutoload {
+	public static string AutoloadPath { get; } = "/root/GameObjectManager";
+
+	private static GameObjectManager _instance;
+	private readonly Dictionary<ulong, Node> GameObjects = [];
+
+	private GameObjectManager() {
+		_instance = this;
+	}
+
+	public static GameObjectManager GetInstance() {
+		return _instance;
+	}
+
+	public void AddEntity(ulong entityId, Node node) {
+		AddChild(node);
+		GameObjects[entityId] = node;
+	}
+
+	public void RemoveEntity(ulong entityId) {
+		Node node = GameObjects[entityId];
+		node.QueueFree();
+		GameObjects.Remove(entityId);
+	}
+
+	public Node GetNodeByEntityId(ulong entityId) {
+		return GameObjects[entityId];
+	}
+}
