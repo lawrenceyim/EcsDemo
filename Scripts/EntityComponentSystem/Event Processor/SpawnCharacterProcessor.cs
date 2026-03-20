@@ -5,7 +5,7 @@ public class SpawnCharacterProcessor : IEventProcessor<SpawnPlayerCharacterEvent
     private GameLoop _gameLoop;
 
     public SpawnCharacterProcessor(GameLoop gameLoop) {
-        this._gameLoop = gameLoop;
+        _gameLoop = gameLoop;
     }
 
     public void ProcessEvent(SpawnPlayerCharacterEvent e) {

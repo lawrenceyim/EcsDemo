@@ -4,10 +4,9 @@ using Godot;
 
 public partial class GameObjectManager : Node, IAutoload {
     public static string AutoloadPath { get; } = "/root/GameObjectManager";
-
+    public readonly Dictionary<ulong, Node> GameObjects = [];
     private static GameObjectManager _instance;
-    private readonly Dictionary<ulong, Node> GameObjects = [];
-    
+
     // Do not add parameters. Autoload needs it
     private GameObjectManager() {
         _instance = this;

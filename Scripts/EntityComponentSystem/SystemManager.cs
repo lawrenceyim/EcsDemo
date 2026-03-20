@@ -12,6 +12,7 @@ public class SystemManager {
         _gameLoop = gameLoop;
 
         AddSystem<MovementSystem>(new MovementSystem(gameLoop));
+        AddSystem<RenderSystem>(new RenderSystem(gameLoop));
     }
 
     public void AddSystem<T>(ISystem system) where T : ISystem {

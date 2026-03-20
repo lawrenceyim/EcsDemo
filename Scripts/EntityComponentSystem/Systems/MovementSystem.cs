@@ -12,7 +12,9 @@ public class MovementSystem : ISystem {
 
     public void Update(double delta) {
         foreach (Entity entity in _entities.Values) {
-            entity.GetComponent<PositionComponent>().Position += entity.GetComponent<MovementComponent>().Velocity;
+            PositionComponent positionComponent = entity.GetComponent<PositionComponent>();
+            positionComponent.Position += entity.GetComponent<MovementComponent>().Velocity;
+            entity.UpdateComponent(typeof(PositionComponent), positionComponent);
         }
     }
 

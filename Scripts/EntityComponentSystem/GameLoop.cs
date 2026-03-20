@@ -16,10 +16,11 @@ public class GameLoop : IAutoload, ITick {
     private Entity _testEntity;
 
     private GameLoop() {
+        // GameObjectManager needs to be instantiated first since it is a dependency
+        GameObjectManager = GameObjectManager.GetInstance();
         EntityManager = new EntityManager();
         SystemManager = new SystemManager(this);
         EventManager = new EventManager(this);
-        GameObjectManager = GameObjectManager.GetInstance();
         _gameClock = GameClock.GetInstance();
         _gameClock.AddActiveScene(this, 0);
     }
@@ -38,9 +39,7 @@ public class GameLoop : IAutoload, ITick {
     public void Update(double delta) {
         EventManager.ProcessEvents();
         SystemManager.GetSystem<MovementSystem>().Update(delta);
-
-        // TODO: remove this and refactor
-        // (GameObjectManager.GetGameObjectByEntityId(_testEntity.EntityId) as Sprite2D).Position = EntityManager.GetEntity(0).GetComponent<PositionComponent>().Position;
+        SystemManager.GetSystem<RenderSystem>().Update(delta);
     }
 
     public void PhysicsTick() {

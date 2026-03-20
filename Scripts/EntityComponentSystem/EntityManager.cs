@@ -21,6 +21,6 @@ public class EntityManager {
     }
 
     public Entity GetEntity(ulong entityId) {
-        return _entities[entityId];
+        return _entities.GetValueOrDefault(entityId, null);
     }
 }
