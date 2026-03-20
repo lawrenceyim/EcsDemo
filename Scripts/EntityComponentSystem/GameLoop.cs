@@ -34,6 +34,7 @@ public class GameLoop : IAutoload, ITick {
         _testEntity.AddComponent(typeof(MovementComponent), movementComponent);
         _testEntity.AddComponent(typeof(PositionComponent), new PositionComponent());
         Sprite2D sprite = new Sprite2D();
+        // Create some sort of Render component
         sprite.Texture = GD.Load<Texture2D>("res://Assets/Sprites/Placeholder/icon.svg");
         _gameObjectManager.AddEntity(_testEntity.EntityId, sprite);
         movementSystem.AddEntity(_testEntity);
