@@ -1,9 +1,6 @@
-using System;
-using System.ComponentModel;
-
 namespace EntityComponentSystem;
 
-public class ComponentStore<T> where T : Component {
+public class ComponentStore<T> : IComponentStore where T : IComponent {
     private readonly SwapRemoveStorage<T> _swapRemoveStorage;
 
     public ComponentStore(int initialEntityCapacity, int initialComponentCapacity) {

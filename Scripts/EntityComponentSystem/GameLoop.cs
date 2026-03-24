@@ -2,10 +2,7 @@ public class GameLoop : IAutoload, ITick {
     public static string AutoloadPath { get; } = "/root/GameClock";
 
     public static GameLoop _instance;
-
-
     private GameClock _gameClock;
-
 
     private GameLoop() {
         // GameObjectManager needs to be instantiated first since it is a dependency
