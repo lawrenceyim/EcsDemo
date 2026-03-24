@@ -1,21 +1,26 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+using System.Numerics;
 using Godot;
 
 namespace EntityComponentSystem;
 
+// Figure out how to add AND, OR, NOT to query
+// Make query a separate system?
 public class EntityManager {
     private const int InitialSparseSetCapacity = 1_000_000;
     private const int InitialDenseSetCapacity = 10_000;
     private readonly Dictionary<int, Entity> _entities = [];
     private readonly Dictionary<int, IComponentStore> _componentStores = [];
-    private readonly Dictionary<Archetype, List<int>> _archetypes = [];
+    private readonly Dictionary<Archetype, List<int>> _archetypeEntities = [];
+    private readonly CommandBuffer _commandBuffer;
+
+    public EntityManager() {
+        _commandBuffer = new CommandBuffer(this);
+    }
 
     public List<int> GetEntitiesByComponentId(int componentId) {
         List<int> result = [];
-        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypes) {
+        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypeEntities) {
             if (MaskUtils.Has(kvp.Key.Mask, componentId)) {
                 result.AddRange(kvp.Value);
             }
@@ -26,7 +31,7 @@ public class EntityManager {
 
     public List<int> GetEntitiesByMask(ulong[] mask) {
         List<int> result = [];
-        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypes) {
+        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypeEntities) {
             if (MaskUtils.HasAll(kvp.Key.Mask, mask)) {
                 result.AddRange(kvp.Value);
             }
@@ -46,16 +51,16 @@ public class EntityManager {
     }
 
     public void AddEntityToArchetype(Archetype archetype, int entityId) {
-        if (!_archetypes.TryGetValue(archetype, out List<int> group)) {
+        if (!_archetypeEntities.TryGetValue(archetype, out List<int> group)) {
             group = [];
-            _archetypes[archetype] = group;
+            _archetypeEntities[archetype] = group;
         }
 
         group.Add(entityId);
     }
 
     public void RemoveEntityFromArchetype(Archetype archetype, int entityId) {
-        if (_archetypes.TryGetValue(archetype, out List<int> group)) {
+        if (_archetypeEntities.TryGetValue(archetype, out List<int> group)) {
             group.Remove(entityId);
         }
     }
@@ -74,7 +79,7 @@ public class EntityManager {
             ulong bits = entity.Mask[block];
 
             while (bits != 0) {
-                int bit = System.Numerics.BitOperations.TrailingZeroCount(bits);
+                int bit = BitOperations.TrailingZeroCount(bits);
                 int componentId = block * 64 + bit;
                 _componentStores[componentId].RemoveEntity(entityId);
                 bits &= bits - 1;
