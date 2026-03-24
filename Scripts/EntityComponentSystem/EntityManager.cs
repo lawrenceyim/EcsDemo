@@ -1,26 +1,38 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Godot;
 
 namespace EntityComponentSystem;
 
 public class EntityManager {
-    private readonly Dictionary<ulong, Entity> _entities = [];
-    private ulong _nextEntityId = 0;
+    public HashSet<int> Entities { get; } = [];
+    private readonly Dictionary<Type, object> _componentStores = [];
+    private readonly Dictionary<Archetype, List<int>> _entityGroups = [];
 
-    public Entity CreateNewEntity() {
-        Entity entity = new Entity(_nextEntityId++);
-        return entity;
+    public void AddComponentStore<T>(ComponentStore<T> store) where T : Component {
+        Type type = typeof(T);
+        if (!_componentStores.TryAdd(type, store)) {
+            GD.PrintErr($"EntityManager could not add ComponentStore {type}");
+        }
     }
 
-    public void AddEntity(Entity entity) {
-        _entities[entity.EntityId] = entity;
+    public ComponentStore<T> GetComponentStore<T>() where T : Component {
+        return _componentStores.GetValueOrDefault(typeof(T), null) as ComponentStore<T>;
     }
 
-    public void RemoveEntity(ulong entityId) {
-        _entities.Remove(entityId);
+    public void AddEntity(Archetype archetype, int entityId) {
+        if (!_entityGroups.TryGetValue(archetype, out List<int> group)) {
+            group = [];
+            _entityGroups[archetype] = group;
+        }
+
+        group.Add(entityId);
     }
 
-    public Entity GetEntity(ulong entityId) {
-        return _entities.GetValueOrDefault(entityId, null);
+    public void RemoveEntity(Archetype archetype, int entityId) {
+        if (_entityGroups.TryGetValue(archetype, out List<int> group)) {
+            group.Remove(entityId);
+        }
     }
 }
