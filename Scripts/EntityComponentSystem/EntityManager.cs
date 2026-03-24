@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Godot;
 
 namespace EntityComponentSystem;
@@ -11,6 +12,28 @@ public class EntityManager {
     private readonly Dictionary<int, Entity> _entities = [];
     private readonly Dictionary<int, IComponentStore> _componentStores = [];
     private readonly Dictionary<Archetype, List<int>> _archetypes = [];
+
+    public List<int> GetEntitiesByComponentId(int componentId) {
+        List<int> result = [];
+        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypes) {
+            if (MaskUtils.Has(kvp.Key.Mask, componentId)) {
+                result.AddRange(kvp.Value);
+            }
+        }
+
+        return result;
+    }
+
+    public List<int> GetEntitiesByMask(ulong[] mask) {
+        List<int> result = [];
+        foreach (KeyValuePair<Archetype, List<int>> kvp in _archetypes) {
+            if (MaskUtils.HasAll(kvp.Key.Mask, mask)) {
+                result.AddRange(kvp.Value);
+            }
+        }
+
+        return result;
+    }
 
     public void AddComponentStore<T>(int componentId) where T : IComponent {
         if (!_componentStores.TryAdd(componentId, new ComponentStore<T>(InitialSparseSetCapacity, InitialDenseSetCapacity))) {
@@ -45,7 +68,7 @@ public class EntityManager {
     public void RemoveEntity(Archetype archetype, int entityId) {
         RemoveEntityFromArchetype(archetype, entityId);
 
-        // bitmask metehod for performance
+        // bitmask method for performance
         Entity entity = _entities[entityId];
         for (int block = 0; block < 4; block++) {
             ulong bits = entity.Mask[block];

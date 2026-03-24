@@ -5,21 +5,21 @@ public static class MaskUtils {
     public const int BlockSize = 64;
     public const int BlockCount = 4;
 
-    public static void Set(ulong[] mask, int id) {
-        int block = id / BlockSize;
-        int bit = id % BlockSize;
+    public static void Set(ulong[] mask, int componentId) {
+        int block = componentId / BlockSize;
+        int bit = componentId % BlockSize;
         mask[block] |= (1UL << bit);
     }
 
-    public static void Clear(ulong[] mask, int id) {
-        int block = id / BlockSize;
-        int bit = id % BlockSize;
+    public static void Clear(ulong[] mask, int componentId) {
+        int block = componentId / BlockSize;
+        int bit = componentId % BlockSize;
         mask[block] &= ~(1UL << bit);
     }
 
-    public static bool Has(ulong[] mask, int id) {
-        int block = id / BlockSize;
-        int bit = id % BlockSize;
+    public static bool Has(ulong[] mask, int componentId) {
+        int block = componentId / BlockSize;
+        int bit = componentId % BlockSize;
         return (mask[block] & (1UL << bit)) != 0;
     }
 
