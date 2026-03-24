@@ -35,13 +35,13 @@ public class EntityManager {
         return result;
     }
 
-    public void AddComponentStore<T>(int componentId) where T : IComponent {
+    public void AddComponentStore<T>(int componentId) where T : struct, IComponent {
         if (!_componentStores.TryAdd(componentId, new ComponentStore<T>(InitialSparseSetCapacity, InitialDenseSetCapacity))) {
             GD.PrintErr($"EntityManager could not add ComponentStore {componentId}");
         }
     }
 
-    public ComponentStore<T> GetComponentStore<T>(int componentId) where T : IComponent {
+    public ComponentStore<T> GetComponentStore<T>(int componentId) where T : struct, IComponent {
         return (ComponentStore<T>)_componentStores[componentId];
     }
 
@@ -76,7 +76,7 @@ public class EntityManager {
             while (bits != 0) {
                 int bit = System.Numerics.BitOperations.TrailingZeroCount(bits);
                 int componentId = block * 64 + bit;
-                _componentStores[componentId].Remove(entityId);
+                _componentStores[componentId].RemoveEntity(entityId);
                 bits &= bits - 1;
             }
         }
@@ -89,17 +89,22 @@ public class EntityManager {
         _entities.Remove(entityId);
     }
 
-    public void AddComponent<T>(int entityId, int componentId, T component) where T : IComponent {
-        ((ComponentStore<T>)_componentStores[componentId]).Add(entityId, component);
+    public void AddComponent<T>(int entityId, int componentId, T component) where T : struct, IComponent {
+        ((ComponentStore<T>)_componentStores[componentId]).AddComponent(entityId, component);
         _entities[entityId].AddComponent(componentId);
     }
 
-    public void RemoveComponent<T>(int entityId, int componentId) where T : IComponent {
-        ((ComponentStore<T>)_componentStores[componentId]).Remove(entityId);
+    public void RemoveComponent<T>(int entityId, int componentId) where T : struct, IComponent {
+        ((ComponentStore<T>)_componentStores[componentId]).RemoveEntity(entityId);
         _entities[entityId].RemoveComponent(componentId);
     }
 
     public bool HasComponent(int entityId, int componentId) {
         return _entities[entityId].HasComponent(componentId);
+    }
+
+    public ref T GetComponent<T>(int entityId, int componentId) where T : struct, IComponent {
+        ComponentStore<T> store = (ComponentStore<T>)_componentStores[componentId];
+        return ref store.GetComponent(entityId);
     }
 }

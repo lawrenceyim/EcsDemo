@@ -1,3 +1,3 @@
 public interface IComponentStore {
-    public void Remove(int entityId);
+    public void RemoveEntity(int entityId);
 }
