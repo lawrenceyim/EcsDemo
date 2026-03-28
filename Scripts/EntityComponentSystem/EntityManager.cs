@@ -12,10 +12,12 @@ public class EntityManager {
     private readonly Dictionary<int, Entity> _entities = [];
     private readonly Dictionary<int, IComponentStore> _componentStores = [];
     private readonly Dictionary<Archetype, List<int>> _archetypeEntities = [];
+    private readonly ISystem[] _systems;
     private readonly CommandBuffer _commandBuffer;
 
     public EntityManager() {
         _commandBuffer = new CommandBuffer(this);
+        _systems = _InitializeSystems();
     }
 
     public List<int> GetEntitiesByComponentId(int componentId) {
@@ -111,5 +113,12 @@ public class EntityManager {
     public ref T GetComponent<T>(int entityId, int componentId) where T : struct, IComponent {
         ComponentStore<T> store = (ComponentStore<T>)_componentStores[componentId];
         return ref store.GetComponent(entityId);
+    }
+
+    private ISystem[] _InitializeSystems() {
+        ISystem[] systems = new ISystem[10];
+        // Read from JSON or something for modding support
+        
+        return systems;
     }
 }
