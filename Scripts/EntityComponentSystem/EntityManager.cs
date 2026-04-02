@@ -118,7 +118,7 @@ public class EntityManager {
     private ISystem[] _InitializeSystems() {
         ISystem[] systems = new ISystem[10];
         // Read from JSON or something for modding support
-        
+
         return systems;
     }
 }
